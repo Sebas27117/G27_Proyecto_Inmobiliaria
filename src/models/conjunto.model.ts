@@ -1,7 +1,7 @@
 import {Entity, model, property, hasMany} from '@loopback/repository';
 import {Propietario} from './propietario.model';
-import {Torre} from './torre.model';
 import {Facturacion} from './facturacion.model';
+import {Torre} from './torre.model';
 import {Usuario} from './usuario.model';
 
 @model()
@@ -61,11 +61,11 @@ export class Conjunto extends Entity {
   @hasMany(() => Propietario)
   propietarios: Propietario[];
 
-  @hasMany(() => Torre)
-  torres: Torre[];
-
   @hasMany(() => Facturacion)
   facturaciones: Facturacion[];
+
+  @hasMany(() => Torre)
+  torres: Torre[];
 
   @hasMany(() => Usuario)
   usuarios: Usuario[];

@@ -15,14 +15,14 @@ import {
 import fetch from 'cross-fetch';
 import {Propietario} from '../models';
 import {PropietarioRepository} from '../repositories';
-import {AutenticationService} from '../services/autentication.service';
+import {AutenticationService} from '../services';
 
 export class PropietarioController {
   constructor(
     @repository(PropietarioRepository)
     public propietarioRepository: PropietarioRepository,
     @service(AutenticationService)
-    public autenticacionService: AutenticationService,
+    public autenticationService: AutenticationService,
   ) { }
 
   @post('/propietarios')
@@ -43,14 +43,16 @@ export class PropietarioController {
     })
     propietario: Omit<Propietario, 'id'>,
   ): Promise<Propietario> {
-    //let clave = this.autenticacionService.generarClave();
-    propietario.Clave = this.autenticacionService.cifrarClave(propietario.Clave);
+    propietario.Clave = this.autenticationService.cifrarClave(propietario.Clave);
     let prop = await this.propietarioRepository.create(propietario);
     //return this.propietarioRepository.create(propietario);
-    fetch('http://127.0.0.1:5000/email?correo=' + prop.Correo + '&asunto=Inscrición exitosa.&mensaje=Hola señor: ' + prop.Nombres + '. Su inscrición a la Inmobiliaria ha sido exitosa.')
+
+    fetch('http://127.0.0.1:5000/email?correo=' + prop.Correo + '&asunto=Inscripción exitosa a nuestro portal.&mensaje=Hola señor ' + prop.Nombres +
+      '. Su inscripción a la Inmobiliaria ha sido exitosa.')
       .then((response) => response.text())
-      .then(data => console.log(`Esta es la respuesta del servicio: ${data}`));
-    return prop;
+      .then(data => console.log(`La respuesta del servicio es: ${data}`));
+
+    return prop
   }
 
   @get('/propietarios/count')

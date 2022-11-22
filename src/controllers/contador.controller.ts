@@ -4,18 +4,12 @@ import {
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Contador} from '../models';
 import {ContadorRepository} from '../repositories';
@@ -23,10 +17,10 @@ import {ContadorRepository} from '../repositories';
 export class ContadorController {
   constructor(
     @repository(ContadorRepository)
-    public contadorRepository : ContadorRepository,
-  ) {}
+    public contadorRepository: ContadorRepository,
+  ) { }
 
-  @post('/contador')
+  @post('/contadores')
   @response(200, {
     description: 'Contador model instance',
     content: {'application/json': {schema: getModelSchemaRef(Contador)}},
@@ -47,7 +41,7 @@ export class ContadorController {
     return this.contadorRepository.create(contador);
   }
 
-  @get('/contador/count')
+  @get('/contadores/count')
   @response(200, {
     description: 'Contador model count',
     content: {'application/json': {schema: CountSchema}},
@@ -58,7 +52,7 @@ export class ContadorController {
     return this.contadorRepository.count(where);
   }
 
-  @get('/contador')
+  @get('/contadores')
   @response(200, {
     description: 'Array of Contador model instances',
     content: {
@@ -76,7 +70,7 @@ export class ContadorController {
     return this.contadorRepository.find(filter);
   }
 
-  @patch('/contador')
+  @patch('/contadores')
   @response(200, {
     description: 'Contador PATCH success count',
     content: {'application/json': {schema: CountSchema}},
@@ -95,7 +89,7 @@ export class ContadorController {
     return this.contadorRepository.updateAll(contador, where);
   }
 
-  @get('/contador/{id}')
+  @get('/contadores/{id}')
   @response(200, {
     description: 'Contador model instance',
     content: {
@@ -111,7 +105,7 @@ export class ContadorController {
     return this.contadorRepository.findById(id, filter);
   }
 
-  @patch('/contador/{id}')
+  @patch('/contadores/{id}')
   @response(204, {
     description: 'Contador PATCH success',
   })
@@ -129,7 +123,7 @@ export class ContadorController {
     await this.contadorRepository.updateById(id, contador);
   }
 
-  @put('/contador/{id}')
+  @put('/contadores/{id}')
   @response(204, {
     description: 'Contador PUT success',
   })
@@ -140,7 +134,7 @@ export class ContadorController {
     await this.contadorRepository.replaceById(id, contador);
   }
 
-  @del('/contador/{id}')
+  @del('/contadores/{id}')
   @response(204, {
     description: 'Contador DELETE success',
   })

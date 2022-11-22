@@ -42,7 +42,7 @@ export class TorreInmuebleController {
     @param.path.string('id') id: string,
     @param.query.object('filter') filter?: Filter<Inmueble>,
   ): Promise<Inmueble[]> {
-    return this.torreRepository.inmuebles_torre(id).find(filter);
+    return this.torreRepository.inmuebles(id).find(filter);
   }
 
   @post('/torres/{id}/inmuebles', {
@@ -67,7 +67,7 @@ export class TorreInmuebleController {
       },
     }) inmueble: Omit<Inmueble, 'id'>,
   ): Promise<Inmueble> {
-    return this.torreRepository.inmuebles_torre(id).create(inmueble);
+    return this.torreRepository.inmuebles(id).create(inmueble);
   }
 
   @patch('/torres/{id}/inmuebles', {
@@ -90,7 +90,7 @@ export class TorreInmuebleController {
     inmueble: Partial<Inmueble>,
     @param.query.object('where', getWhereSchemaFor(Inmueble)) where?: Where<Inmueble>,
   ): Promise<Count> {
-    return this.torreRepository.inmuebles_torre(id).patch(inmueble, where);
+    return this.torreRepository.inmuebles(id).patch(inmueble, where);
   }
 
   @del('/torres/{id}/inmuebles', {
@@ -105,6 +105,6 @@ export class TorreInmuebleController {
     @param.path.string('id') id: string,
     @param.query.object('where', getWhereSchemaFor(Inmueble)) where?: Where<Inmueble>,
   ): Promise<Count> {
-    return this.torreRepository.inmuebles_torre(id).delete(where);
+    return this.torreRepository.inmuebles(id).delete(where);
   }
 }

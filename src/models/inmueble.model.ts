@@ -1,7 +1,7 @@
-import {Entity, model, property, hasMany, belongsTo} from '@loopback/repository';
+import {Entity, model, property, belongsTo, hasMany} from '@loopback/repository';
+import {Torre} from './torre.model';
 import {Imagen} from './imagen.model';
 import {Propietario} from './propietario.model';
-import {Torre} from './torre.model';
 
 @model()
 export class Inmueble extends Entity {
@@ -18,14 +18,26 @@ export class Inmueble extends Entity {
   })
   Numero: string;
 
+  @property({
+    type: 'number',
+    required: true,
+  })
+  Precio: number;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  Estado: string;
+
+  @belongsTo(() => Torre)
+  torreId: string;
+
   @hasMany(() => Imagen)
   imagenes: Imagen[];
 
   @belongsTo(() => Propietario)
   propietarioId: string;
-
-  @belongsTo(() => Torre)
-  torreId: string;
 
   constructor(data?: Partial<Inmueble>) {
     super(data);
