@@ -1,31 +1,85 @@
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Inmueble} from '../models';
 import {InmuebleRepository} from '../repositories';
+import {InmuebleService} from '../services/inmueble.service';
 
 export class InmuebleController {
   constructor(
     @repository(InmuebleRepository)
-    public inmuebleRepository : InmuebleRepository,
-  ) {}
+    public inmuebleRepository: InmuebleRepository,
+    @service(InmuebleService)
+    public inmuebleService: InmuebleService,
+  ) { }
+  //Inmuebles disponibles
+  @get('/inmuebles-disponibles')
+  @response(200, {
+    description: 'Consulta de inmuebles disponibles.',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'array',
+          items: getModelSchemaRef(Inmueble, {includeRelations: true}),
+        },
+      },
+    },
+  })
+  async inmueblesDisponibles(): Promise<Inmueble[]> {
+    return this.inmuebleService.getInmueblesDisponibles();
+  }
+  //Inmuebles disponibles según precio
+  @get('/inmuebles-disp-precio/{precio}')
+  @response(200, {
+    description: 'Consulta de inmuebles disponibles.',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'array',
+          items: getModelSchemaRef(Inmueble, {includeRelations: true}),
+        },
+      },
+    },
+  })
+  async inmueblesDisponiblesPrecio(
+    @param.path.number('precio') precio: number
+  ): Promise<Inmueble[]> {
+    return this.inmuebleService.getInmueblesPorPrecio(precio);
+  }
 
+  //Inmuebles con precio mayor a (parametros)
+  @get('/inmuebles-precio-mayor-a/{precio}')
+  @response(200, {
+    description: 'Consulta de inmuebles disponibles.',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'array',
+          items: getModelSchemaRef(Inmueble, {includeRelations: true}),
+        },
+      },
+    },
+  })
+  async inmueblesPrecioMayorA(
+    //injectar parametros
+    @param.path.number('precio') precio: number
+  ): Promise<Inmueble[]> {
+    return this.inmuebleService.getInmueblesPrecioMayorA(precio);
+  }
+
+
+  //Crear inmueble (POST)
   @post('/inmuebles')
   @response(200, {
     description: 'Inmueble model instance',

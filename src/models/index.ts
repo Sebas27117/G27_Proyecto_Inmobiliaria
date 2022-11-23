@@ -6,3 +6,4 @@ export * from './propietario.model';
 export * from './facturacion.model';
 export * from './contador.model';
 export * from './usuario.model';
+export * from './login.model';

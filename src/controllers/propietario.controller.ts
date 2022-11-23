@@ -14,6 +14,7 @@ import {
 } from '@loopback/rest';
 import fetch from 'cross-fetch';
 import {Propietario} from '../models';
+import {Login} from '../models/login.model';
 import {PropietarioRepository} from '../repositories';
 import {AutenticationService} from '../services';
 
@@ -24,6 +25,25 @@ export class PropietarioController {
     @service(AutenticationService)
     public autenticationService: AutenticationService,
   ) { }
+
+  @post('new-login')
+  @response(200, {
+    description: "Valida las credenciales de acceso del propietario."
+  })
+  async validarAcceso(@requestBody() credenciales: Login) {
+    let prop = await this.autenticationService.validarAcceso(credenciales.usuario, credenciales.password);
+    if (prop) {
+      let token = this.autenticationService.generatorTokenJWT(prop);
+      return {
+        datos: {
+          nombre: `${prop.Nombres} ${prop.Apellidos}`,
+          correo: prop.Correo,
+          id: prop.id
+        },
+        token: token
+      }
+    }
+  }
 
   @post('/propietarios')
   @response(200, {
